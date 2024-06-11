@@ -3,6 +3,7 @@ package com.community.demo.books.controller;
 
 import com.community.demo.books.model.dto.BookDto;
 import com.community.demo.books.model.dto.CreateBookDto;
+import com.community.demo.books.model.dto.SupportedLanguagesDto;
 import com.community.demo.books.model.dto.UpdateBookDto;
 import com.community.demo.books.model.dto.UpdateLanguagesDto;
 import com.community.demo.books.model.entity.Book;
@@ -40,6 +41,13 @@ public class BookController {
   @GetMapping("/{id}")
   public Mono<ResponseEntity<BookDto>> get(@PathVariable Long id) {
     return bookService.get(id)
+        .map(ResponseEntity::ok)
+        .defaultIfEmpty(ResponseEntity.notFound().build());
+  }
+
+  @GetMapping("/{id}/supported-languages")
+  public Mono<ResponseEntity<SupportedLanguagesDto>> getSupportedLanguages(@PathVariable Long id) {
+    return bookService.getSupportedLanguages(id)
         .map(ResponseEntity::ok)
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
