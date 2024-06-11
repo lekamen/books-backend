@@ -6,7 +6,6 @@ import com.community.demo.books.model.dto.BookDto;
 import com.community.demo.books.model.dto.CreateBookDto;
 import com.community.demo.books.model.dto.SupportedLanguagesDto;
 import com.community.demo.books.model.dto.UpdateBookDto;
-import com.community.demo.books.model.entity.Book;
 import com.community.demo.books.model.entity.Language;
 import com.community.demo.books.repository.BookRepository;
 import java.util.Optional;
@@ -64,7 +63,8 @@ public class BookService {
         .subscribeOn(Schedulers.boundedElastic())
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .map(existingBook -> bookRepository.save(BookMapper.update(existingBook, book)))
+        .zipWith(languageService.findById(book.originalLanguageId()))
+        .map(pair -> bookRepository.save(BookMapper.update(pair.getT1(), book, pair.getT2())))
         .map(BookMapper::toBookDto)
         .switchIfEmpty(Mono.error(new IllegalArgumentException()));
   }
@@ -75,13 +75,14 @@ public class BookService {
         .subscribeOn(Schedulers.boundedElastic());
   }
 
-  public Mono<Book> updateLanguages(Long id, Set<Long> languageIds) {
+  public Mono<BookDto> updateLanguages(Long id, Set<Long> languageIds) {
     return Mono.fromCallable(() -> bookRepository.findById(id))
         .subscribeOn(Schedulers.boundedElastic())
         .filter(Optional::isPresent)
         .switchIfEmpty(Mono.error(new IllegalArgumentException())) //TODO: custom exception?
         .map(Optional::get)
         .zipWith(languageService.findByIds(languageIds))
-        .map(pair -> bookRepository.save(BookMapper.updateLanguages(pair.getT1(), pair.getT2())));
+        .map(pair -> bookRepository.save(BookMapper.updateLanguages(pair.getT1(), pair.getT2())))
+        .map(BookMapper::toBookDto);
   }
 }

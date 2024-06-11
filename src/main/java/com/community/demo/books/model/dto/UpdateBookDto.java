@@ -18,5 +18,7 @@ public class UpdateBookDto {
   String name;
   String author;
   String publisher;
+  Long originalLanguageId;
   boolean isPublished;
+  boolean isInternational;
 }

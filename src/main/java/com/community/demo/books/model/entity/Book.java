@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.HashSet;
 import java.util.Objects;
@@ -30,6 +31,11 @@ public class Book {
   private String name;
   private String author;
   private String publisher;
+
+  @ManyToOne
+  @JoinColumn(name = "original_language_id", nullable = false)
+  private Language originalLanguage;
+
   private boolean isPublished;
   private boolean isInternational;
 

@@ -6,7 +6,6 @@ import com.community.demo.books.model.dto.CreateBookDto;
 import com.community.demo.books.model.dto.SupportedLanguagesDto;
 import com.community.demo.books.model.dto.UpdateBookDto;
 import com.community.demo.books.model.dto.UpdateLanguagesDto;
-import com.community.demo.books.model.entity.Book;
 import com.community.demo.books.service.BookService;
 import java.util.HashSet;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +44,7 @@ public class BookController {
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
 
-  @GetMapping("/{id}/supported-languages")
+  @GetMapping("/{id}/languages")
   public Mono<ResponseEntity<SupportedLanguagesDto>> getSupportedLanguages(@PathVariable Long id) {
     return bookService.getSupportedLanguages(id)
         .map(ResponseEntity::ok)
@@ -72,7 +71,7 @@ public class BookController {
   }
 
   @PutMapping("/{id}/languages")
-  public Mono<ResponseEntity<Book>> updateLanguages(@PathVariable Long id, @RequestBody UpdateLanguagesDto dto) {
+  public Mono<ResponseEntity<BookDto>> updateLanguages(@PathVariable Long id, @RequestBody UpdateLanguagesDto dto) {
     return bookService.updateLanguages(id, new HashSet<>(dto.languageIds()))
         .map(ResponseEntity::ok)
         .defaultIfEmpty(ResponseEntity.notFound().build());

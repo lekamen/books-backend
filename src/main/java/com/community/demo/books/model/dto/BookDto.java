@@ -28,6 +28,9 @@ public class BookDto {
   @JsonProperty("publisher")
   String publisher;
 
+  @JsonProperty("originalLanguage")
+  LanguageDto originalLanguage;
+
   @JsonProperty("isPublished")
   boolean isPublished;
 

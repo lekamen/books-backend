@@ -75,4 +75,12 @@ public class LanguageService {
         .subscribeOn(Schedulers.boundedElastic())
         .map(HashSet::new);
   }
+
+  public Mono<Language> findById(Long id) {
+    return Mono.fromCallable(() -> languageRepository.findById(id))
+        .subscribeOn(Schedulers.boundedElastic())
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .switchIfEmpty(Mono.error(new IllegalArgumentException()));
+  }
 }

@@ -17,16 +17,19 @@ public class BookMapper {
         .name(book.getName())
         .author(book.getAuthor())
         .publisher(book.getPublisher())
+        .originalLanguage(LanguageMapper.toLanguageDto(book.getOriginalLanguage()))
         .isPublished(book.isPublished())
         .isInternational(book.isInternational())
         .build();
   }
 
-  public static Book update(Book existingBook, UpdateBookDto book) {
+  public static Book update(Book existingBook, UpdateBookDto book, Language language) {
     existingBook.setName(book.name());
     existingBook.setAuthor(book.author());
     existingBook.setPublisher(book.publisher());
     existingBook.setPublished(book.isPublished());
+    existingBook.setInternational(book.isInternational());
+    existingBook.setOriginalLanguage(language);
 
     return existingBook;
   }

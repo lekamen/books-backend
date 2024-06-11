@@ -18,5 +18,6 @@ public class CreateBookDto {
   String name;
   String author;
   String publisher;
+  String originalLanguage;
   boolean isPublished;
 }
