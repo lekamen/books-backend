@@ -27,6 +27,10 @@ public class BookDto {
 
   @JsonProperty("publisher")
   String publisher;
+
+  @JsonProperty("isPublished")
   boolean isPublished;
+
+  @JsonProperty("isInternational")
   boolean isInternational;
 }
